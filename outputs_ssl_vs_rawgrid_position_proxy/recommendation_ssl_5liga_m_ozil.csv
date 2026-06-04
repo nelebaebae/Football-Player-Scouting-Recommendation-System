@@ -1,0 +1,11 @@
+player_id,player_name,role_name,specific_position,team_name,n_matches,total_touches,representation,similarity_score
+8317,David Silva,Midfielder,CAM,Manchester City,29,3034,ssl_embedding,0.8770078
+16025,M. Kruse,Forward,ST,Werder Bremen,28,1802,ssl_embedding,0.86125016
+54,C. Eriksen,Midfielder,CAM,Tottenham Hotspur,37,3105,ssl_embedding,0.8496217
+25776,W. Khazri,Midfielder,ST,Rennes,24,1233,ssl_embedding,0.8445154
+3344,Rafinha,Midfielder,CM,Internazionale,16,1041,ssl_embedding,0.8420812
+70096,J. Rodríguez,Midfielder,CAM,Bayern München,23,1906,ssl_embedding,0.8376599
+28122,Y. Benzia,Forward,CAM,Lille,31,1918,ssl_embedding,0.83304244
+15107,Raffael,Forward,ST,Borussia M'gladbach,27,1280,ssl_embedding,0.83148885
+38021,K. De Bruyne,Midfielder,CAM,Manchester City,37,3634,ssl_embedding,0.8235893
+14806,M. Götze,Midfielder,CM,Borussia Dortmund,22,1329,ssl_embedding,0.8074163

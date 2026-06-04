@@ -1,0 +1,13 @@
+dataset,representation,category,consistency_at_5
+1liga,random_baseline,role_name,0.3592549019607844
+1liga,raw_grid_baseline,role_name,0.8830065359477124
+1liga,ssl_embedding,role_name,0.881045751633987
+1liga,random_baseline,specific_position,0.12938562091503267
+1liga,raw_grid_baseline,specific_position,0.7084967320261437
+1liga,ssl_embedding,specific_position,0.7509803921568627
+5liga,random_baseline,role_name,0.35135335689045943
+5liga,raw_grid_baseline,role_name,0.8605418138987042
+5liga,ssl_embedding,role_name,0.8574793875147232
+5liga,random_baseline,specific_position,0.13058775029446407
+5liga,raw_grid_baseline,specific_position,0.7212014134275619
+5liga,ssl_embedding,specific_position,0.7188457008244994

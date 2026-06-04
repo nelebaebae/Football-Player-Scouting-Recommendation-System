@@ -1,0 +1,11 @@
+player_id,player_name,role_name,specific_position,team_name,n_matches,total_touches,representation,similarity_score
+54,C. Eriksen,Midfielder,CAM,Tottenham Hotspur,37,3105,raw_grid_baseline,0.92637086
+38021,K. De Bruyne,Midfielder,CAM,Manchester City,37,3634,raw_grid_baseline,0.913293
+25707,E. Hazard,Forward,LW,Chelsea,34,2326,raw_grid_baseline,0.90406275
+20879,R. Nainggolan,Midfielder,CM,Roma,31,1893,raw_grid_baseline,0.90150297
+14806,M. Götze,Midfielder,CM,Borussia Dortmund,22,1329,raw_grid_baseline,0.8998956
+26384,G. Kakuta,Midfielder,ST,Amiens SC,36,2320,raw_grid_baseline,0.89916635
+26100,N. Sliti,Midfielder,LW,Dijon,31,1666,raw_grid_baseline,0.89908504
+8317,David Silva,Midfielder,CAM,Manchester City,29,3034,raw_grid_baseline,0.8942887
+32652,E. Çolak,Midfielder,CAM,Deportivo La Coruña,26,1156,raw_grid_baseline,0.8903688
+15051,L. Stindl,Forward,ST,Borussia M'gladbach,31,2242,raw_grid_baseline,0.8881007
