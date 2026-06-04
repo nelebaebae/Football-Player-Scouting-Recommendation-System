@@ -1,5 +1,7 @@
 # Football Player Scouting Recommendation System
 
+STREAMLIT APPLICATION : https://football-player-scouting-recommendation-system.streamlit.app
+
 Repository ini berisi implementasi proyek skripsi tentang sistem rekomendasi pemain sepak bola berbasis pola sentuhan pemain di lapangan. Sistem mempelajari representasi aktivitas spasial pemain dari data `touch events`, lalu menghasilkan rekomendasi pemain yang memiliki pola permainan paling mirip dengan pemain acuan.
 
 Metode utama yang digunakan adalah **Self-Supervised Learning (SSL)** untuk membentuk embedding dari touch map pemain, kemudian **cosine similarity** digunakan untuk menghitung kedekatan antar pemain. Aplikasi akhir dibangun menggunakan **Streamlit** dan dilengkapi visualisasi heatmap agar hasil rekomendasi lebih mudah diinterpretasikan.
