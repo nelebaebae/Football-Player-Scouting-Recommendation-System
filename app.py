@@ -430,7 +430,7 @@ def get_filtered_names(player_df, query, max_options=60):
     if not q:
         return df["player_name"].dropna().drop_duplicates().sort_values().head(max_options).tolist()
 
-    matches = df[df["_name_key"].str.contains(q, na=False)].copy()
+    matches = df[df["_name_key"].apply(lambda key: name_matches(key, q))].copy()
 
     if len(matches) == 0:
         return []
@@ -442,9 +442,25 @@ def get_filtered_names(player_df, query, max_options=60):
     return matches["player_name"].dropna().drop_duplicates().head(max_options).tolist()
 
 
+def name_matches(key, query):
+    if not query:
+        return False
+    return query in key or all(part in key.split() for part in query.split())
+
+
 def get_all_player_names(player_df):
     names = player_df["player_name"].dropna().drop_duplicates().tolist()
     return sorted(names, key=lambda x: str(x).lower())
+
+
+def player_search_label(name):
+    key = name_key(name)
+    alias = " ".join(part for part in key.split() if len(part) > 1)
+    visible = clean_display_name(name)
+    visible_key = name_key(visible)
+    has_initial = any(len(part) == 1 for part in visible_key.split())
+    has_accent = visible_key != str(visible).lower().strip()
+    return f"{visible} · {alias}" if alias and (has_initial or has_accent) else visible
 
 
 def recommend_by_player_name(player_name, player_df, emb_cols, top_k=10):
@@ -453,7 +469,7 @@ def recommend_by_player_name(player_name, player_df, emb_cols, top_k=10):
 
     exact = df[df["_name_key"] == q]
     if len(exact) == 0:
-        partial = df[df["_name_key"].str.contains(q, na=False)]
+        partial = df[df["_name_key"].apply(lambda key: name_matches(key, q))]
         if len(partial) == 0:
             return None, None
         exact = partial.head(1)
@@ -484,12 +500,12 @@ def get_player_grid(player_name, sample_df, X):
     if "_name_key" in sample_df.columns:
         idx = sample_df.index[sample_df["_name_key"] == q].to_numpy()
         if len(idx) == 0:
-            idx = sample_df.index[sample_df["_name_key"].str.contains(q, na=False)].to_numpy()
+            idx = sample_df.index[sample_df["_name_key"].apply(lambda key: name_matches(key, q))].to_numpy()
     else:
         tmp_names = sample_df["player_name"].apply(name_key)
         idx = sample_df.index[tmp_names == q].to_numpy()
         if len(idx) == 0:
-            idx = sample_df.index[tmp_names.str.contains(q, na=False)].to_numpy()
+            idx = sample_df.index[tmp_names.apply(lambda key: name_matches(key, q))].to_numpy()
 
     if len(idx) == 0:
         return None
@@ -785,7 +801,8 @@ with left:
             "Cari dan pilih anchor player",
             options=all_players,
             index=default_index,
-            help="Ketik langsung di kotak ini untuk filter nama pemain. Tidak perlu kotak search terpisah.",
+            format_func=player_search_label,
+            help="Ketik nama di dropdown. Alias tanpa aksen ditampilkan untuk nama seperti M. Özil.",
         )
         st.session_state["selected_player"] = selected
 
@@ -814,6 +831,11 @@ with left:
         for rank, (_, row) in enumerate(recs_show.iterrows(), start=1):
             render_rec_row(rank, row, base_score)
 
+        candidate_options = recs_df["player_name"].head(top_k).apply(clean_display_name).tolist()
+        if st.session_state.get("compare_candidate") not in candidate_options:
+            st.session_state["compare_candidate"] = candidate_options[0]
+        candidate_name = st.selectbox("Pilih kandidat untuk compare", candidate_options, key="compare_candidate")
+
         st.markdown(
             """
             <div class="caption-box">
@@ -834,8 +856,7 @@ with right:
         st.markdown('<div class="section-title">Heatmap Visualization</div>', unsafe_allow_html=True)
 
         target_name = clean_display_name(target_df.iloc[0]["player_name"])
-        top_candidate = recs_df.iloc[0]
-        candidate_name = clean_display_name(top_candidate["player_name"])
+        top_candidate = recs_df[recs_df["player_name"].apply(clean_display_name) == candidate_name].iloc[0]
         candidate_score = float(top_candidate["similarity_score"])
 
         card_col1, card_col2 = st.columns(2, gap="large")
@@ -899,12 +920,12 @@ with right:
             unsafe_allow_html=True,
         )
 
-        tab_more, tab_table = st.tabs(["Top 4 Heatmaps", "Recommendation Table"])
+        tab_more, tab_table = st.tabs(["Top 10 Heatmaps", "Recommendation Table"])
 
         with tab_more:
-            st.write("4 kandidat teratas selain anchor player.")
+            st.write("10 kandidat teratas selain anchor player.")
 
-            candidates = recs_df.head(4).copy()
+            candidates = recs_df.head(min(10, top_k)).copy()
             cols = st.columns(2, gap="medium")
 
             for i, (_, row) in enumerate(candidates.iterrows()):

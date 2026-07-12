@@ -1,4 +1,6 @@
 .DS_Store
+__pycache__/
+*.pyc
 DATASET/touch_events_1liga.csv
 DATASET/touch_events_5liga.csv
 outputs_ssl_vs_rawgrid_position_proxy/filtered_events_1liga.csv
